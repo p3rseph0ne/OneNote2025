@@ -4,18 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 
 class NoteListActivity : AppCompatActivity() {
 
     private lateinit var listView: ListView
-    private lateinit var noteDao: NoteDao
     private lateinit var adapter: NoteAdapter
+    private lateinit var db: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +23,8 @@ class NoteListActivity : AppCompatActivity() {
         // Find views by ID
         listView = findViewById(R.id.listView)
 
-        // Initialize Room DB
-        val db = Room.databaseBuilder(
-            applicationContext,
-            NotesDatabase::class.java, "notes"
-        ).allowMainThreadQueries().build()
-        noteDao = db.noteDao()
-        adapter = NoteAdapter(this, noteDao.getAll())
+        db = Database(this)
+        adapter = NoteAdapter(this, db.getAllNotes())
 
         // Set adapter
         listView.setAdapter(adapter)
@@ -43,7 +34,7 @@ class NoteListActivity : AppCompatActivity() {
         super.onResume()
 
         // Reload notes
-        adapter.notes = noteDao.getAll()
+        adapter.notes = db.getAllNotes()
         adapter.notifyDataSetChanged()
     }
 

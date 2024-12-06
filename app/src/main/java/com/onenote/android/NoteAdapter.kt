@@ -20,7 +20,7 @@ class NoteAdapter(context: Context, var notes: List<Note>): BaseAdapter() {
     }
 
     override fun getItemId(position: Int): Long {
-        return notes[position].id.toLong()
+        return notes[position].id
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

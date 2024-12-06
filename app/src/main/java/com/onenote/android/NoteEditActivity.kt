@@ -5,16 +5,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.room.Room
 
 class NoteEditActivity : AppCompatActivity() {
 
     private lateinit var preferences: Preferences
-    private lateinit var noteDao: NoteDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +26,6 @@ class NoteEditActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
 
-        // Initialize Room DB
-        val db = Room.databaseBuilder(
-            applicationContext,
-            NotesDatabase::class.java, "notes"
-        ).allowMainThreadQueries().build()
-        noteDao = db.noteDao()
-
         // Find views by ID
         val noteEditTitle = findViewById<EditText>(R.id.noteEditTitle)
         val noteEditMessage = findViewById<EditText>(R.id.noteEditMessage)
@@ -47,9 +37,9 @@ class NoteEditActivity : AppCompatActivity() {
 
         // Set OnClickListener
         buttonSave.setOnClickListener{
-            val note = Note(noteEditMessage.editableText.toString(), noteEditTitle.editableText.toString())
-            noteDao.insertAll(note)
-            Toast.makeText(this, noteDao.getAll().toString(), Toast.LENGTH_LONG).show()
+            val note = Note(noteEditTitle.editableText.toString(), noteEditMessage.editableText.toString())
+            val db =  Database(this)
+            db.insertNote(note)
 
             finish()
         }
