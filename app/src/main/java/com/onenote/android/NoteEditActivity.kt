@@ -12,6 +12,8 @@ import androidx.appcompat.widget.Toolbar
 class NoteEditActivity : AppCompatActivity() {
 
     private lateinit var preferences: Preferences
+    private lateinit var db: Database
+    private var id = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +33,17 @@ class NoteEditActivity : AppCompatActivity() {
         val noteEditMessage = findViewById<EditText>(R.id.noteEditMessage)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
-        // Set title and message if available
-        noteEditTitle.setText(preferences.getNoteTitle())
-        noteEditMessage.setText(preferences.getNoteMessage())
+        db = Database(this)
+        id = intent.getLongExtra("id", -1)
+        if (id >= 0) {
+            val note = db.getNote(id)
+            noteEditTitle.setText(note?.title)
+            noteEditMessage.setText(note?.message)
+        }
 
         // Set OnClickListener
         buttonSave.setOnClickListener{
             val note = Note(noteEditTitle.editableText.toString(), noteEditMessage.editableText.toString())
-            val db =  Database(this)
             db.insertNote(note)
 
             finish()

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
-class NoteListActivity : AppCompatActivity() {
+class NoteListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private lateinit var listView: ListView
     private lateinit var adapter: NoteAdapter
@@ -27,7 +29,8 @@ class NoteListActivity : AppCompatActivity() {
         adapter = NoteAdapter(this, db.getAllNotes())
 
         // Set adapter
-        listView.setAdapter(adapter)
+        listView.adapter = adapter
+        listView.onItemClickListener = this
     }
 
     override fun onResume() {
@@ -53,5 +56,11 @@ class NoteListActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
+        val intent = Intent(this, NoteEditActivity::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
     }
 }
