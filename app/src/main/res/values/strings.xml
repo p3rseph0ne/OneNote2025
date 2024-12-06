@@ -6,6 +6,7 @@
     <string name="message">Message</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
+    <string name="show_location">Show location</string>
     <string name="saved">Saved</string>
     <string name="delete">Delete</string>
     <string name="yes">Yes</string>
