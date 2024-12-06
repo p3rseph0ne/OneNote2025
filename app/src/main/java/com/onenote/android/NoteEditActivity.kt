@@ -1,9 +1,14 @@
 package com.onenote.android
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -67,6 +72,10 @@ class NoteEditActivity : AppCompatActivity() {
                 db.insertNote(note)
             }
 
+            vibrate()
+
+            MediaPlayer.create(this, R.raw.beep).start()
+
             Toast.makeText(this, R.string.saved, Toast.LENGTH_LONG).show()
 
             finish()
@@ -90,6 +99,17 @@ class NoteEditActivity : AppCompatActivity() {
             .addOnSuccessListener { location : Location? ->
                 Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show()
             }
+    }
+
+    private fun vibrate() {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            //deprecated in API 26
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(500)
+        }
     }
 
     private fun requestPermissions() {
@@ -125,5 +145,13 @@ class NoteEditActivity : AppCompatActivity() {
             }
             .setNegativeButton(getString(R.string.no), null)
             .show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 101) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                displayLocation()
+            }
+        }
     }
 }
