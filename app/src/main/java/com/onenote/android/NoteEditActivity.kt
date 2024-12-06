@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -33,6 +34,7 @@ class NoteEditActivity : AppCompatActivity() {
         val noteEditMessage = findViewById<EditText>(R.id.noteEditMessage)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
 
+        // Init database
         db = Database(this)
         id = intent.getLongExtra("id", -1)
         if (id >= 0) {
@@ -43,15 +45,23 @@ class NoteEditActivity : AppCompatActivity() {
 
         // Set OnClickListener
         buttonSave.setOnClickListener{
-            val note = Note(noteEditTitle.editableText.toString(), noteEditMessage.editableText.toString())
-            db.insertNote(note)
+            val note = Note(noteEditTitle.editableText.toString(), noteEditMessage.editableText.toString(), id)
+            if (id >= 0) {
+                db.updateNote(note)
+            } else {
+                db.insertNote(note)
+            }
+
+            Toast.makeText(this, R.string.saved, Toast.LENGTH_LONG).show()
 
             finish()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_edit, menu)
+        if (id >= 0) {
+            menuInflater.inflate(R.menu.menu_edit, menu)
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -70,8 +80,7 @@ class NoteEditActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setMessage(getString(R.string.delete_message))
             .setPositiveButton(R.string.yes) { _, _ ->
-                preferences.setNoteTitle(null)
-                preferences.setNoteMessage(null)
+                db.deleteNote(id)
                 finish()
             }
             .setNegativeButton(getString(R.string.no), null)

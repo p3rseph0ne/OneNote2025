@@ -25,10 +25,11 @@ class NoteListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         // Find views by ID
         listView = findViewById(R.id.listView)
 
+        // Init database
         db = Database(this)
-        adapter = NoteAdapter(this, db.getAllNotes())
 
         // Set adapter
+        adapter = NoteAdapter(this, db.getAllNotes())
         listView.adapter = adapter
         listView.onItemClickListener = this
     }

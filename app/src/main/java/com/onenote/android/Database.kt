@@ -103,6 +103,23 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         return note
     }
 
+    // Update single note
+    fun updateNote(note: Note): Int {
+        return writableDatabase.update(DATABASE_TABLE_NAME,
+            noteToContentValues(note),
+            "$KEY_ID=?",
+            arrayOf(note.id.toString()))
+    }
+
+    // Delete single note
+    fun deleteNote(id: Long) {
+        writableDatabase.delete(
+            DATABASE_TABLE_NAME,
+            "$KEY_ID=?",
+            arrayOf(id.toString())
+        )
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE)
     }
