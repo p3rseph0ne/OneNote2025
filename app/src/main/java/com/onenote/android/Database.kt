@@ -14,25 +14,31 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         // Database properties
         private const val DATABASE_NAME = "onenote"
         private const val DATABASE_TABLE_NAME = "notes"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
         // Database table column names
         private const val KEY_ID = "id"
         private const val KEY_TITLE = "title"
         private const val KEY_MESSAGE = "message"
+        private const val KEY_LOCATION = "location"
+        private const val KEY_IMAGE = "image"
 
         // Create table statement
         private const val CREATE_TABLE = ("""CREATE TABLE $DATABASE_TABLE_NAME(
-                $KEY_ID INTEGER PRIMARY KEY,
-                $KEY_TITLE TEXT,
-                $KEY_MESSAGE TEXT
-                )""")
+               $KEY_ID INTEGER PRIMARY KEY,
+               $KEY_TITLE TEXT,
+               $KEY_MESSAGE TEXT,
+               $KEY_LOCATION TEXT,
+               $KEY_IMAGE TEXT
+               )""")
 
         // Database cursor array
         private val CURSOR_ARRAY = arrayOf(
             KEY_ID,
             KEY_TITLE,
-            KEY_MESSAGE
+            KEY_MESSAGE,
+            KEY_LOCATION,
+            KEY_IMAGE
         )
 
         // Select all statement
@@ -42,7 +48,6 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
     // Insert note into database
     fun insertNote(note: Note): Long {
         val values = noteToContentValues(note)
-
         return writableDatabase.insert(DATABASE_TABLE_NAME, null, values)
     }
 
@@ -52,6 +57,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
         values.put(KEY_TITLE, note.title)
         values.put(KEY_MESSAGE, note.message)
+        values.put(KEY_LOCATION, note.location)
+        values.put(KEY_IMAGE, note.imagePath)
 
         return values
     }
@@ -96,7 +103,9 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
             note = Note(
                 getString(getColumnIndex(KEY_TITLE)),
                 getString(getColumnIndex(KEY_MESSAGE)),
-                getLong(getColumnIndex(KEY_ID))
+                getLong(getColumnIndex(KEY_ID)),
+                getString(getColumnIndex(KEY_LOCATION)),
+                getString(getColumnIndex(KEY_IMAGE))
             )
         }
 
@@ -124,6 +133,10 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         db.execSQL(CREATE_TABLE)
     }
 
-    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) {
+            // Add image column to existing table
+            db.execSQL("ALTER TABLE $DATABASE_TABLE_NAME ADD COLUMN $KEY_IMAGE TEXT")
+        }
     }
 }

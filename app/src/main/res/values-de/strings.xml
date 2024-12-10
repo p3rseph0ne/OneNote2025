@@ -13,4 +13,6 @@
     <string name="no">Nein</string>
     <string name="note_deleted">Notiz gelöscht</string>
     <string name="delete_message">Möchtest du diese Notiz wirklich löschen?</string>
+    <string name="location">Standort</string>
+    <string name="upload_image">Bild hochladen</string>
 </resources>

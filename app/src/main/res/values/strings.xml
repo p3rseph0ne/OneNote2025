@@ -13,4 +13,6 @@
     <string name="no">No</string>
     <string name="note_deleted">Note deleted</string>
     <string name="delete_message">Do you really want to delete this note?</string>
+    <string name="location">Location</string>
+    <string name="upload_image">Upload Image</string>
 </resources>

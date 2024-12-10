@@ -26,6 +26,29 @@
         android:layout_margin="@dimen/margin_medium"
         android:hint="@string/message"/>
 
+    <ImageView
+        android:id="@+id/noteImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="@dimen/margin_medium"
+        android:scaleType="centerCrop"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/buttonUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="@string/upload_image"
+        style="@style/Button"/>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        style="@style/ListItem.Message"/>
+
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="match_parent"
