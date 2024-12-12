@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,17 +22,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 
-class NoteEditActivity : AppCompatActivity() {
+class NoteEditActivity:BaseActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var preferences: Preferences
@@ -106,15 +104,13 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     private fun selectImage() {
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+        val options = arrayOf<CharSequence>("Choose from Gallery", "Cancel")
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Add Photo")
         builder.setItems(options) { dialog, item ->
             when {
-                options[item] == "Take Photo" -> {
-                    requestCameraPermission()
-                }
                 options[item] == "Choose from Gallery" -> {
+                    Log.d("PermissionDebug", "Requesting Gallery permission")
                     requestGalleryPermission()
                 }
                 options[item] == "Cancel" -> {
@@ -125,48 +121,23 @@ class NoteEditActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun requestCameraPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-        } else {
-            launchCamera()
-        }
-    }
-
     private fun requestGalleryPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_PERMISSION_REQUEST_CODE)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("PermissionDebug", "check gallery permissions ")
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), GALLERY_PERMISSION_REQUEST_CODE)
+
         } else {
+
+            Log.d("PermissionDebug", "launch gallery method call ")
             launchGallery()
         }
     }
 
-    private fun launchCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        "com.onenote.android.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
-    }
 
     private fun launchGallery() {
+        Log.d("PermissionDebug", "launch gallery")
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_GALLERY_PICK)
     }
@@ -327,13 +298,6 @@ class NoteEditActivity : AppCompatActivity() {
                     displayLocation()
                 }
             }
-            CAMERA_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    launchCamera()
-                }
-            }
             GALLERY_PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -344,10 +308,50 @@ class NoteEditActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Only show delete menu for existing notes
+        if (id >= 0) {
+            menuInflater.inflate(R.menu.menu_edit, menu)
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.delete_confirmation_title)
+                    .setMessage(R.string.delete_confirmation_message)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        if (id >= 0) {
+                            db.deleteNote(id)
+                            // Delete associated image file if it exists
+                            if (currentPhotoPath.isNotEmpty()) {
+                                try {
+                                    File(currentPhotoPath).delete()
+                                } catch (e: Exception) {
+                                    Log.e("NoteEditActivity", "Error deleting image file", e)
+                                }
+                            }
+                            Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
+                    .setNegativeButton(R.string.no, null)
+                    .show()
+                true
+            }
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
         private const val LOCATION_DISPLAY_PERMISSION_REQUEST_CODE = 1002
-        private const val CAMERA_PERMISSION_REQUEST_CODE = 1003
         private const val GALLERY_PERMISSION_REQUEST_CODE = 1004
         private const val REQUEST_IMAGE_CAPTURE = 1005
         private const val REQUEST_GALLERY_PICK = 1006

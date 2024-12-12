@@ -1,28 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.OneNote2025" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/blue</item>
+        <!-- Customized feminine theme -->
+        <item name="colorPrimary">@color/pink_primary</item>
+        <item name="colorSecondary">@color/lavender</item>
+        <item name="colorAccent">@color/rose_gold</item>
+        <item name="android:windowBackground">@color/soft_pink_background</item>
+        <item name="android:statusBarColor">@color/pink_primary</item>
+        <item name="buttonStyle">@style/Button</item>
     </style>
 
     <style name="Theme.OneNote2025" parent="Base.Theme.OneNote2025" />
 
     <style name="Title">
-        <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/deep_purple</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.05</item>
     </style>
 
     <style name="Icon">
         <item name="android:src">@drawable/ic_event_note</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:tint">@color/pink_primary</item>
     </style>
 
-    <style name="Button">
+    <style name="Button" parent="Widget.Material3.Button">
         <item name="android:layout_margin">20dp</item>
-        <item name="android:text">@string/login</item>
-        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="cornerRadius">8dp</item>
     </style>
 
     <style name="ListItem">
@@ -30,15 +39,19 @@
         <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/dark_pink</item>
+        <item name="android:background">@drawable/list_item_bg</item>
+        <item name="android:padding">16dp</item>
     </style>
 
     <style name="ListItem.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/deep_purple</item>
     </style>
 
     <style name="ListItem.Message">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/mauve</item>
     </style>
 </resources>

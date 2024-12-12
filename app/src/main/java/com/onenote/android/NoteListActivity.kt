@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
-class NoteListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class NoteListActivity : BaseActivity(), AdapterView.OnItemClickListener {
 
     private lateinit var listView: ListView
     private lateinit var adapter: NoteAdapter

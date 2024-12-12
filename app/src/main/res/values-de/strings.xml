@@ -15,4 +15,6 @@
     <string name="delete_message">Möchtest du diese Notiz wirklich löschen?</string>
     <string name="location">Standort</string>
     <string name="upload_image">Bild hochladen</string>
+    <string name="delete_confirmation_title">Notiz löschen</string>
+    <string name="delete_confirmation_message">Notiz löschen?</string>
 </resources>

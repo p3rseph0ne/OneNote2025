@@ -15,4 +15,6 @@
     <string name="delete_message">Do you really want to delete this note?</string>
     <string name="location">Location</string>
     <string name="upload_image">Upload Image</string>
+    <string name="delete_confirmation_title">Delete Note</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this note?</string>
 </resources>

@@ -1,7 +1,64 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Dark application theme. -->
     <style name="Base.Theme.OneNote2025" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customized dark feminine theme with higher contrast -->
+        <item name="colorPrimary">@color/bright_pink</item>
+        <item name="colorSecondary">@color/neon_purple</item>
+        <item name="colorAccent">@color/electric_rose_gold</item>
+        <item name="android:windowBackground">@color/rich_dark_background</item>
+        <item name="android:statusBarColor">@color/rich_dark_background</item>
+        <item name="buttonStyle">@style/Button</item>
+        <item name="android:textColorPrimary">@color/bright_white</item>
+        <item name="android:textColorSecondary">@color/soft_lavender</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/bright_white</item>
+        <item name="android:itemBackground">@color/dark_surface</item>
+        <item name="colorOnPrimary">@color/rich_dark_background</item>
+        <item name="colorOnSecondary">@color/bright_white</item>
+    </style>
+
+    <style name="Theme.OneNote2025" parent="Base.Theme.OneNote2025" />
+
+    <style name="Title">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/neon_purple</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <style name="Icon">
+        <item name="android:src">@drawable/ic_event_note</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:tint">@color/bright_pink</item>
+    </style>
+
+    <style name="Button" parent="Widget.Material3.Button">
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="ListItem">
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:textColor">@color/bright_white</item>
+        <item name="android:background">@drawable/dark_list_item_bg</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="ListItem.Title">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/electric_rose_gold</item>
+    </style>
+
+    <style name="ListItem.Message">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/soft_lavender</item>
     </style>
 </resources>

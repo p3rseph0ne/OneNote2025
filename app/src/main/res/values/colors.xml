@@ -3,4 +3,26 @@
     <color name="black">#000000</color>
     <color name="blue">#3F51B5</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pink_primary">#FF69B4</color>
+    <color name="lavender">#E6E6FA</color>
+    <color name="rose_gold">#B76E79</color>
+    <color name="soft_pink_background">#FFF0F5</color>
+    <color name="deep_purple">#614051</color>
+    <color name="dark_pink">#FF1493</color>
+    <color name="mauve">#916988</color>
+    <color name="dark_background">#1a1a1a</color>
+    <color name="dark_pink_primary">#FF69B4</color>
+    <color name="dark_lavender">#9370DB</color>
+    <color name="dark_rose_gold">#B76E79</color>
+    <color name="dark_deep_purple">#483D8B</color>
+    <color name="dark_surface">#2d2d2d</color>
+    <color name="dark_mauve">#E0B0FF</color>
+    <color name="dark_text_primary">#E0E0E0</color>
+    <color name="dark_text_secondary">#B0B0B0</color>
+    <color name="rich_dark_background">#1A1A1A</color>
+    <color name="bright_pink">#FF69B4</color>
+    <color name="neon_purple">#B266FF</color>
+    <color name="electric_rose_gold">#FFB6C1</color>
+    <color name="bright_white">#FFFFFF</color>
+    <color name="soft_lavender">#E6E6FA</color>
 </resources>

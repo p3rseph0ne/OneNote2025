@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?android:windowBackground"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Icon"/>
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        style="@style/Icon"
+        android:contentDescription="@string/app_name"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,11 +23,14 @@
         style="@style/Title"
         android:text="@string/app_name"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/login"
         style="@style/Button"/>
 
 </FrameLayout>
